@@ -1,0 +1,233 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>Novo Produto</h1>
+      </div>
+      <p-tabView>
+        <p-tabPanel header="Padrão">
+          <div class="ui-g-12 ui-fluid">
+            <label>Nome</label>
+              <input pInputText type="text" name="nome"
+                [(ngModel)]="produto.nome"
+                #nome="ngModel" required minlength="5">
+          </div>
+        
+          <div class="ui-g-12 ui-md-9 ui-fluid">
+            <label>Valor de custo</label>
+            <input pInputText type="text" name="valorCusto" placeholder="0,00" currencyMask
+              [(ngModel)]="produto.valorCusto" [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+              #valorCusto required>
+          </div>
+        
+          <div class="ui-g-12 ui-md-9 ui-fluid">
+            <label>Valor de venda</label>
+            <input pInputText type="text" name="valor" placeholder="0,00" currencyMask
+              [(ngModel)]="produto.valor" [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+              #valor required>
+          </div>
+        
+          <div class="ui-g-12 ui-md-9 ui-fluid">
+            <label>Quantidade em estoque</label>
+            <input pInputText type="number" id="estoque" name="estoque"
+              [(ngModel)]="produto.estoque"
+              #estoque>
+          </div>
+        
+          <div class="ui-g-12 ui-md-9 ui-fluid">
+            <label>Quantidade em estoque mínimo</label>
+            <input pInputText type="number" id="estoqueMinimo" name="estoqueMinimo"
+              [(ngModel)]="produto.estoqueMinimo"
+              #estoque>
+          </div>
+        
+          <div class="ui-g-12 ui-md-9 ui-fluid">
+            <label>Categoria</label>
+            <p-dropdown id="categoria" name="categoria"
+              [autoWidth]="false" placeholder="Selecione..."
+              [options]="categorias" optionLabel="nome"
+              [(ngModel)]="produto.categoria" required></p-dropdown>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Adicionais">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-fluid">
+              <button pButton label="Novo" icon="fa fa-plus" type="button"
+              class="ui-button-secondary" (click)="prepararNovoAdicional()"></button>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+              <p-table [value]="produto.adicionais" [responsive]="true">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Nome</th>
+                    <th class="col-acoes-header"></th>
+                  </tr>
+                </ng-template>
+        
+                <ng-template pTemplate="body" let-adicional let-rowIndex="rowIndex">
+                  <tr>
+                    <td>{{ adicional.nome }}</td>
+                    <td class="col-acoes">
+                        <button pButton icon="fa fa-pencil" type="button"
+                        pTooltip="Editar" tooltipPosition="top"
+                        (click)="prepararEdicaoAdicional(adicional, rowIndex)"></button>
+                      <button pButton icon="fa fa-trash" type="button"
+                        pTooltip="Excluir" tooltipPosition="top"
+                        (click)="removerAdicional(rowIndex)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+        
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">
+                      Nenhum adicional de produto encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Observações">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-fluid">
+              <button pButton label="Novo" icon="fa fa-plus" type="button"
+              class="ui-button-secondary" (click)="prepararNovaObservacao()"></button>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+              <p-table [value]="produto.observacoes" [responsive]="true">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Nome</th>
+                    <th class="col-acoes-header"></th>
+                  </tr>
+                </ng-template>
+            
+                <ng-template pTemplate="body" let-observacao let-rowIndex="rowIndex">
+                  <tr>
+                    <td>{{ observacao.nome }}</td>
+                    <td class="col-acoes">
+                        <button pButton icon="fa fa-pencil" type="button"
+                        pTooltip="Editar" tooltipPosition="top"
+                        (click)="prepararEdicaoObservacao(observacao, rowIndex)"></button>
+                      <button pButton icon="fa fa-trash" type="button"
+                        pTooltip="Excluir" tooltipPosition="top"
+                        (click)="removerObservacao(rowIndex)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+            
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">
+                      Nenhum adicional de produto encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Retirar">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-fluid">
+              <button pButton label="Novo" icon="fa fa-plus" type="button"
+              class="ui-button-secondary" (click)="prepararNovoRetirar()"></button>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+              <p-table [value]="produto.retirars" [responsive]="true">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Nome</th>
+                    <th class="col-acoes-header"></th>
+                  </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="body" let-retirar let-rowIndex="rowIndex">
+                  <tr>
+                    <td>{{ retirar.nome }}</td>
+                    <td class="col-acoes">
+                        <button pButton icon="fa fa-pencil" type="button"
+                        pTooltip="Editar" tooltipPosition="top"
+                        (click)="prepararEdicaoRetirar(retirar, rowIndex)"></button>
+                      <button pButton icon="fa fa-trash" type="button"
+                      pTooltip="Excluir" tooltipPosition="top"
+                      (click)="removerRetirar(rowIndex)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">
+                      Nenhum adicional de produto encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Nova" class="ui-button-info"
+          (click)="novo(f)"></button>
+
+        <a routerLink="/produtos">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<p-dialog header="Novo Adicional" [(visible)]="exibindoFormularioAdicional"
+  modal="modal1" *ngIf="adicional">
+  <form #frmAdicional="ngForm" (ngSubmit)="confirmarAdicional(frmAdicional)">
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+      <input pInputText type="text" name="nome"
+        required [(ngModel)]="adicional.nome" #adicionalNome="ngModel"/>
+
+        <app-message [control]="adicionalNome" error="required" text="Informe o nome"></app-message>
+    </div>
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar" [disabled]="frmAdicional.invalid"></button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Nova Observação" [(visible)]="exibindoFormularioObservacao"
+  modal="modal2" *ngIf="observacao">
+  <form #frmObservacao="ngForm" (ngSubmit)="confirmarObservacao(frmObservacao)">
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+      <input pInputText type="text" name="nome"
+        required [(ngModel)]="observacao.nome" #observacaoNome="ngModel"/>
+
+        <app-message [control]="observacaoNome" error="required" text="Informe o nome"></app-message>
+    </div>
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar" [disabled]="frmObservacao.invalid"></button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Novo Retirar" [(visible)]="exibindoFormularioRetirar"
+  modal="modal3" *ngIf="retirar">
+  <form #frmRetirar="ngForm" (ngSubmit)="confirmarRetirar(frmRetirar)">
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+
+      <input pInputText type="text" name="nome"
+        required [(ngModel)]="retirar.nome" #retirarNome="ngModel"/>
+
+      <app-message [control]="retirarNome" error="required" text="Informe o nome"></app-message>
+    </div>
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar" [disabled]="frmRetirar.invalid"></button>
+    </div>
+  </form>
+</p-dialog>
